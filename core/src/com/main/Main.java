@@ -1,6 +1,7 @@
 package com.main;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -16,32 +17,86 @@ public class Main extends ApplicationAdapter {
 	// CONTROL VARIABLES
 
 	// GAME LISTS
-	ArrayList<Zombie> zombies = new ArrayList<Zombie>();
+	static ArrayList<Zombie> zombies = new ArrayList<Zombie>();
+	static ArrayList<Cannon> cannon = new ArrayList<Cannon>();
+	static ArrayList<Button> button = new ArrayList<Button>();
+	static ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+
+
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		r = new Random();
-
-		for(int i = 0; i < 1000; i++) {
-			zombies.add(new Zombie("zzz", i * 20 + 526, r.nextInt(450), 1));
-		}
+		setup();
 	}
 
 	@Override
 	public void render () {
 		ScreenUtils.clear(1, 0, 0, 1);
-		//update();
+		update();
 		batch.begin();
 		batch.draw(Resources.bg, 0, 0);
+
+		// RENDER SPRITES
+		for(Cannon z : cannon) z.draw(batch);
+		for(Button z : button) z.draw(batch);
 		for(Zombie z : zombies) z.draw(batch);
-		for(Zombie z : zombies) z.update();
+		for(Bullet b : bullets) b.draw(batch);
+
 		batch.end();
 	}
 
-	//void update() {
-		//zombie.update();
-	//}
+	void update() {
+		tap();
+		spawn_zombies();
+
+		// UPDATE SPRITES
+		for(Zombie z : zombies) z.update();
+		for(Cannon z : cannon) z.update();
+		for(Button z : button) z.update();
+		for(Bullet b : bullets) b.update();
+
+		tap();
+		removesprite();
+	}
+
+	void tap() {
+		if(Gdx.input.justTouched()) {
+			int x = Gdx.input.getX(), y = Gdx.graphics.getHeight() - Gdx.input.getY();
+
+			for(Cannon c : cannon) if(c.gethitbox().contains(x, y)) return;
+			if(buildable(x, y)) cannon.add(new Cannon("ccc", x, y));
+		}
+	}
+
+	boolean buildable(int x, int y){
+		return (y < 1000 && ((y < 200 || y > 300) && y < 500));
+	}
+
+	void setup() {
+		//spawn zombies
+		Tables.init();
+		spawn_zombies();
+
+		//draw buttons
+		for (int i = 0; i < 5; i++) {
+			button.add(new Button("ccc", 25 + i * 75, 525));
+		}
+	}
+
+	void removesprite() {
+		for(Zombie z : zombies) if (!z.active) {zombies.remove(z); break;}
+		for(Bullet b : bullets) if (!b.active) {bullets.remove(b); break;}
+	}
+
+	void spawn_zombies() {
+		if(!zombies.isEmpty()) return;
+
+		for(int i = 0; i < 1; i++) {
+			zombies.add(new Zombie("zombie", i * 20 + 1024, r.nextInt(450), 1));
+		}
+	}
 
 	// dont write anything bellow
 	@Override
