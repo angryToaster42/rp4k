@@ -17,11 +17,10 @@ public class Bullet {
         this.y = y;
         w = Tables.bullet_resources.get(type) == null ? Resources.bullet.getWidth() : Tables.bullet_resources.get(type).getWidth();
         h = Tables.bullet_resources.get(type) == null ? Resources.bullet.getHeight() : Tables.bullet_resources.get(type).getHeight();
-        angle = 0f;
+        angle = calcAngle();
         speed = 15;
         dt = 0;
         md = 300;
-        calcAngle();
     }
 
     void draw(SpriteBatch batch) {
@@ -41,11 +40,9 @@ public class Bullet {
         return new Rectangle(x, y, w, h);
     }
 
-    void calcAngle() {
-        if(Main.zombies.isEmpty()) return;
-        float zx = Main.zombies.get(0).x + Main.zombies.get(0).w, zy = Main.zombies.get(0).y + Main.zombies.get(0).h / 2;
-        angle = (float) Math.atan((y - zy)/(x - zx));
-        if(x >= zx) angle += Math.PI;
+    float calcAngle() {
+        float zx = Main.zombies.get(0).x + (float)Main.zombies.get(0).w / 2, zy = Main.zombies.get(0).y + (float)Main.zombies.get(0).h / 2;
+        return (float)(Math.atan((y-zy)/(x-zx)) + (x > zx ? Math.PI : 0));
     }
 
     void hitzombie() {

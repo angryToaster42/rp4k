@@ -3,6 +3,7 @@ package com.main;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
@@ -13,6 +14,7 @@ public class Main extends ApplicationAdapter {
 	// GAME VARIABLES
 	SpriteBatch batch;
 	Random r;
+	String cannontype;
 
 	// CONTROL VARIABLES
 
@@ -21,8 +23,6 @@ public class Main extends ApplicationAdapter {
 	static ArrayList<Cannon> cannon = new ArrayList<Cannon>();
 	static ArrayList<Button> button = new ArrayList<Button>();
 	static ArrayList<Bullet> bullets = new ArrayList<Bullet>();
-
-
 
 	@Override
 	public void create () {
@@ -44,6 +44,8 @@ public class Main extends ApplicationAdapter {
 		for(Zombie z : zombies) z.draw(batch);
 		for(Bullet b : bullets) b.draw(batch);
 
+		UI.draw(batch);
+
 		batch.end();
 	}
 
@@ -57,7 +59,6 @@ public class Main extends ApplicationAdapter {
 		for(Button z : button) z.update();
 		for(Bullet b : bullets) b.update();
 
-		tap();
 		removesprite();
 	}
 
@@ -65,9 +66,26 @@ public class Main extends ApplicationAdapter {
 		if(Gdx.input.justTouched()) {
 			int x = Gdx.input.getX(), y = Gdx.graphics.getHeight() - Gdx.input.getY();
 
+			for(Button b : button) if (b.gethitbox().contains(x,y)) {
+				if (b.locked) b.locked = false;
+				else {
+					deselect();
+					cannontype = b.type;
+					b.selected = true;
+				}
+				return;
+			}
+
 			for(Cannon c : cannon) if(c.gethitbox().contains(x, y)) return;
-			if(buildable(x, y)) cannon.add(new Cannon("ccc", x, y));
+			if(buildable(x, y)) if(UI.money >= Tables.balance.get("cost_"+cannontype)) {
+				UI.money -= Tables.balance.get("cost_"+cannontype);
+				cannon.add(new Cannon(cannontype, x, y));
+			}
 		}
+	}
+
+	void deselect(){
+		for(Button b : button) b.selected = false;
 	}
 
 	boolean buildable(int x, int y){
@@ -80,9 +98,11 @@ public class Main extends ApplicationAdapter {
 		spawn_zombies();
 
 		//draw buttons
-		for (int i = 0; i < 5; i++) {
-			button.add(new Button("ccc", 25 + i * 75, 525));
-		}
+			button.add(new Button("cannon", 200 + button.size() * 75, 525));
+			button.add(new Button("double", 200 + button.size() * 75, 525));
+			button.add(new Button("super", 200 + button.size() * 75, 525));
+			button.add(new Button("fire", 200 + button.size() * 75, 525));
+			button.add(new Button("laser", 200 + button.size() * 75, 525));
 	}
 
 	void removesprite() {
@@ -92,9 +112,11 @@ public class Main extends ApplicationAdapter {
 
 	void spawn_zombies() {
 		if(!zombies.isEmpty()) return;
+		UI.wave++;
+		//for(int i = 0; i < 5 * UI.wave; i++){ }
 
 		for(int i = 0; i < 1; i++) {
-			zombies.add(new Zombie("zombie", i * 20 + 1024, r.nextInt(450), 1));
+			zombies.add(new Zombie("riot", i * 20 + 1024, r.nextInt(450)));
 		}
 	}
 
