@@ -7,8 +7,9 @@ import java.awt.Rectangle;
 public class Button {
     int x, y, w, h;
     float angle;
-    boolean locked = true, selected = false;
+    boolean locked = true, selected = false, tooltipshown = false;
     String type;
+    Tooltip t;
 
     Button(String type, int x, int y) {
         this.type = type;
@@ -17,13 +18,14 @@ public class Button {
         w = Tables.button_resources.get(type) == null ? 50 : Tables.button_resources.get(type).getWidth();
         h = Tables.button_resources.get(type) == null ? 50 : Tables.button_resources.get(type).getHeight();
         angle = 0f;
+        t = type.equals("close") ? null : new Tooltip(type, this);
     }
 
     void draw(SpriteBatch batch) {
         batch.draw(Tables.button_resources.get(type) == null ? Resources.button_cannon : Tables.button_resources.get(type), x, y);
         if (locked) {batch.draw(Resources.locked, x, y);}
-        if (selected) {
-            batch.draw(Resources.selected, x - 7, y - 7);}
+        if (selected) {batch.draw(Resources.selected, x - 7, y - 7);}
+        if(t != null) t.draw(batch);
     }
 
     void update(){

@@ -27,6 +27,7 @@ public class Tables {
         button_resources.put("pause", Resources.button_pause);
         button_resources.put("start", Resources.button_start);
         button_resources.put("exit", Resources.button_exit);
+        button_resources.put("close", Resources.button_close);
 
         zombie_resources.put("fast", Resources.zombie_fast);
         zombie_resources.put("dif", Resources.zombie_dif);
@@ -36,6 +37,12 @@ public class Tables {
         //cannon fire delays
         balance.put("delay_fire", 15);
         balance.put("delay_double", 5);
+
+        //cannon costs
+        balance.put("cost_fire", 30);
+        balance.put("cost_double", 40);
+        balance.put("cost_super", 50);
+        balance.put("cost_laser", 60);
 
         //zombie speeds
         balance.put("speed_speed", 5);

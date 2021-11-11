@@ -66,22 +66,35 @@ public class Main extends ApplicationAdapter {
 		if(Gdx.input.justTouched()) {
 			int x = Gdx.input.getX(), y = Gdx.graphics.getHeight() - Gdx.input.getY();
 
-			for(Button b : button) if (b.gethitbox().contains(x,y)) {
-				if (b.locked) b.locked = false;
-				else {
-					deselect();
-					cannontype = b.type;
-					b.selected = true;
+			for(Button b : button) {
+				if (b.gethitbox().contains(x,y)) {
+					if (b.locked) {
+						if(b.t.hidden) { hidett(); b.t.hidden = false; }
+						else { b.locked= false; b.t.hidden = true; }
+					}
+					else {
+						deselect();
+						cannontype = b.type;
+						b.selected = true;
+					}
+					return;
+				} else {
+					if(b.t.close.gethitbox().contains(x, y) && !b.t.hidden) { hidett(); return; }
+					if(b.t.gethitbox().contains(x, y) && !b.t.hidden) return;
+					if(!b.t.gethitbox().contains(x, y) && !b.t.hidden) { hidett(); return; }
 				}
-				return;
 			}
 
 			for(Cannon c : cannon) if(c.gethitbox().contains(x, y)) return;
-			if(buildable(x, y)) if(UI.money >= Tables.balance.get("cost_"+cannontype)) {
-				UI.money -= Tables.balance.get("cost_"+cannontype);
+			if(buildable(x, y)) if(UI.money >= (Tables.balance.get("cost_"+cannontype) == null ? 10 : Tables.balance.get("cost_"+cannontype))) {
+				UI.money -= (Tables.balance.get("cost_"+cannontype) == null ? 10 : Tables.balance.get("cost_"+cannontype));
 				cannon.add(new Cannon(cannontype, x, y));
 			}
 		}
+	}
+
+	void hidett(){
+		for (Button b : button) b.t.hidden = true;
 	}
 
 	void deselect(){
