@@ -23,6 +23,7 @@ public class Main extends ApplicationAdapter {
 	static ArrayList<Cannon> cannon = new ArrayList<Cannon>();
 	static ArrayList<Button> button = new ArrayList<Button>();
 	static ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+	static ArrayList<Effect> effects = new ArrayList<>();
 
 	@Override
 	public void create () {
@@ -43,6 +44,7 @@ public class Main extends ApplicationAdapter {
 		for(Button z : button) z.draw(batch);
 		for(Zombie z : zombies) z.draw(batch);
 		for(Bullet b : bullets) b.draw(batch);
+		for(Effect b : effects) b.draw(batch);
 
 		UI.draw(batch);
 
@@ -58,6 +60,7 @@ public class Main extends ApplicationAdapter {
 		for(Cannon z : cannon) z.update();
 		for(Button z : button) z.update();
 		for(Bullet b : bullets) b.update();
+		for(Effect b : effects) b.update();
 
 		removesprite();
 	}
@@ -65,6 +68,7 @@ public class Main extends ApplicationAdapter {
 	void tap() {
 		if(Gdx.input.justTouched()) {
 			int x = Gdx.input.getX(), y = Gdx.graphics.getHeight() - Gdx.input.getY();
+			effects.add(new Effect("click", x, y));
 
 			for(Button b : button) {
 				if (b.gethitbox().contains(x,y)) {
@@ -81,7 +85,7 @@ public class Main extends ApplicationAdapter {
 				} else {
 					if(b.t.close.gethitbox().contains(x, y) && !b.t.hidden) { hidett(); return; }
 					if(b.t.gethitbox().contains(x, y) && !b.t.hidden) return;
-					if(!b.t.gethitbox().contains(x, y) && !b.t.hidden) { hidett(); return; }
+					if(!b.t.gethitbox().contains(x, y) && !b.t.hidden) { hidett();}
 				}
 			}
 
@@ -121,15 +125,20 @@ public class Main extends ApplicationAdapter {
 	void removesprite() {
 		for(Zombie z : zombies) if (!z.active) {zombies.remove(z); break;}
 		for(Bullet b : bullets) if (!b.active) {bullets.remove(b); break;}
+		for(Effect b : effects) if (!b.active) {effects.remove(b); break;}
 	}
 
 	void spawn_zombies() {
 		if(!zombies.isEmpty()) return;
 		UI.wave++;
-		//for(int i = 0; i < 5 * UI.wave; i++){ }
-
-		for(int i = 0; i < 1; i++) {
-			zombies.add(new Zombie("riot", i * 20 + 1024, r.nextInt(450)));
+		for(int i = 0; i < 5 * UI.wave; i++){
+			if (UI.wave == 2) {
+				zombies.add(new Zombie("bob", i * 20 + 1024, r.nextInt(450)));
+				return;
+			}
+			else {
+				zombies.add(new Zombie("zombie", i * 20 + 1024, r.nextInt(450)));
+			}
 		}
 	}
 

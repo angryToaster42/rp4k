@@ -39,9 +39,11 @@ public class Zombie {
     void draw(SpriteBatch batch) {
         frame_time += Gdx.graphics.getDeltaTime();
         frame = (TextureRegion) anim.getKeyFrame(frame_time, true);
-        batch.draw(frame, x, y);
+        if(type.equals("bob")) batch.draw(frame, x, y, w*5, h*5);
+        else batch.draw(frame, x, y);
         batch.draw(Resources.red_bar, x, y, w, 5);
-        batch.draw(Resources.green_bar, x, y, w * hp / maxhp, 5);
+        if(type.equals("bob")) batch.draw(Resources.green_bar, x, y, w * hp / maxhp * 5, 5);
+        else batch.draw(Resources.green_bar, x, y, w * hp / maxhp, 5);
     }
 
     void update(){

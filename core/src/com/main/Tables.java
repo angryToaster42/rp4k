@@ -9,7 +9,9 @@ public class Tables {
     static HashMap<String, Texture> button_resources = new HashMap<String, Texture>();
     static HashMap<String, Texture> zombie_resources = new HashMap<String, Texture>();
     static HashMap<String, Texture> bullet_resources = new HashMap<String, Texture>();
+    static HashMap<String, Texture> resources = new HashMap<String, Texture>();
     static HashMap<String, Integer> balance = new HashMap<String, Integer>();
+    static HashMap<String, String> tooltips = new HashMap<String, String>();
 
     static void init() {
         cannon_resources.put("fire", Resources.cannon_fire);
@@ -33,6 +35,16 @@ public class Tables {
         zombie_resources.put("dif", Resources.zombie_dif);
         zombie_resources.put("speed", Resources.zombie_speedy);
         zombie_resources.put("riot", Resources.zombie_riot);
+        zombie_resources.put("bob", Resources.bob);
+
+        resources.put("effect_click", Resources.click_effect);
+
+        //tooltip information
+        tooltips.put("fire", "Fires high damage bullets at a high rate of fire.");
+        tooltips.put("super", "Permanent Cannon, fires low damage bullets at a moderate rate of fire.");
+        tooltips.put("laser", "Fires deadly bullets at an extremely low rate of fire.");
+        tooltips.put("double", "Fire two low damage bullets at a moderate rate of fire.");
+        tooltips.put("mounted", "Spawns a wall full of cannons. Cannons fire low damage bullets at a low rate of fire.");
 
         //cannon fire delays
         balance.put("delay_fire", 15);
@@ -44,16 +56,27 @@ public class Tables {
         balance.put("cost_super", 50);
         balance.put("cost_laser", 60);
 
+        //unlock costs
+        balance.put("unlock_fire", 300);
+        balance.put("unlock_double", 250);
+        balance.put("unlock_super", 100);
+        balance.put("unlock_laser", 200);
+
+
         //zombie speeds
         balance.put("speed_speed", 5);
         balance.put("speed_riot", 1);
+        balance.put("speed_bob", 1);
 
         //zombie hp
         balance.put("hp_fast", 4);
         balance.put("hp_riot", 10);
+        balance.put("hp_bob", 10000);
 
         //anim variabls
         balance.put("cols_speed", 6);
-        balance.put("cols_lazer", 16);
+        balance.put("cols_laser", 16);
+        balance.put("cols_click", 4);
+        balance.put("cols_bob", 6);
     }
 }

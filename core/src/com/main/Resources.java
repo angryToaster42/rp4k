@@ -43,4 +43,10 @@ public class Resources {
 
     //TODO: Sounds
     static Sound sfx_bullet = Gdx.audio.newSound(Gdx.files.internal("Bullet.mp3"));
+
+    //TODO: effects
+    static Texture click_effect = new Texture(Gdx.files.internal("click_effect.png"));
+
+    //TODO: bob
+    static Texture bob = new Texture(Gdx.files.internal("bob.png"));
 }

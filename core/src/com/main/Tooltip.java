@@ -18,6 +18,7 @@ public class Tooltip {
     GlyphLayout layout = new GlyphLayout();
 
     Tooltip(String type, Button parent){
+        this.type = type;
         w = 200;
         h = 100;
         x = (parent.x + parent.w / 2) - w / 2;
@@ -31,7 +32,7 @@ public class Tooltip {
         batch.draw(Resources.tooltip_bg, x, y, w, h);
         close.draw(batch);
 
-        String[] words = "udfhgqw u9fhquwio fehqoihf eiqehf oqiufh iqhfw ioqhwofi hoqihwf doiyas 9iudu ai9 udsioas diopa usdoia sudi uaoi dosau diosa ud098as udoi usaoid asodu jasoiud isaok udoi adsoi asdiohjdasoiu adsio h".split(" ");
+        String[] words = (Tables.tooltips.get(type) == null ? "no info available" : Tables.tooltips.get(type)).split(" ");
         int rx = 5, ry = 5; //relative pos of the text to the position of the tooltip
         for(String s : words){
             if (rx + layout.width >= w - 35){
@@ -43,6 +44,11 @@ public class Tooltip {
             layout.setText(font, " " + s);
             rx += layout.width;
         }
+
+        font.getData().setScale(1.5f);
+        font.setColor(Color.GOLD);
+        font.draw(batch, "Unlock: " + (Tables.balance.get("unlock_"+type) == null ? 0 : Tables.balance.get("unlock_"+type)), x + 35, y + 30);
+        font.getData().setScale(1.0f);
     }
 
     Rectangle gethitbox() { return new Rectangle(x, y, w, h); }
