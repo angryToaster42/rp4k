@@ -40,6 +40,9 @@ public class Resources {
 
     // TODO: Bullets
     static Texture bullet = new Texture(Gdx.files.internal("Bullet.png"));
+    static Texture bullet_missile = new Texture(Gdx.files.internal("missile.png"));
+    static Texture bullet_fire = new Texture(Gdx.files.internal("firebullet.png"));
+    static Texture bullet_super = new Texture(Gdx.files.internal("superbullet.png"));
 
     //TODO: Sounds
     static Sound sfx_bullet = Gdx.audio.newSound(Gdx.files.internal("Bullet.mp3"));

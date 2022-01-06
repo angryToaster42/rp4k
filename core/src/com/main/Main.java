@@ -14,9 +14,10 @@ public class Main extends ApplicationAdapter {
 	// GAME VARIABLES
 	SpriteBatch batch;
 	Random r;
-	String cannontype;
+	String cannontype = "A";
 
 	// CONTROL VARIABLES
+	Boolean pause = false;
 
 	// GAME LISTS
 	static ArrayList<Zombie> zombies = new ArrayList<Zombie>();
@@ -56,12 +57,13 @@ public class Main extends ApplicationAdapter {
 		spawn_zombies();
 
 		// UPDATE SPRITES
-		for(Zombie z : zombies) z.update();
-		for(Cannon z : cannon) z.update();
-		for(Button z : button) z.update();
-		for(Bullet b : bullets) b.update();
-		for(Effect b : effects) b.update();
-
+		if (!pause) {
+			for(Zombie z : zombies) z.update();
+			for(Cannon z : cannon) z.update();
+			for(Button z : button) z.update();
+			for(Bullet b : bullets) b.update();
+			for(Effect b : effects) b.update();
+		}
 		removesprite();
 	}
 
@@ -72,6 +74,12 @@ public class Main extends ApplicationAdapter {
 
 			for(Button b : button) {
 				if (b.gethitbox().contains(x,y)) {
+					if(b.type.equals("pause")) {
+						System.out.println("YOU CLICKED PAUSE");
+						pause = !pause;
+						b.type = !pause ? "play" : "pause";
+						return;
+					}
 					if (b.locked) {
 						if(b.t.hidden) { hidett(); b.t.hidden = false; }
 						else { b.locked= false; b.t.hidden = true; }
@@ -116,11 +124,21 @@ public class Main extends ApplicationAdapter {
 
 		//draw buttons
 			button.add(new Button("cannon", 200 + button.size() * 75, 525));
+			button.get(button.size() - 1).locked = false;
+			button.get(button.size() - 1).selected = true;
 			button.add(new Button("double", 200 + button.size() * 75, 525));
 			button.add(new Button("super", 200 + button.size() * 75, 525));
 			button.add(new Button("fire", 200 + button.size() * 75, 525));
 			button.add(new Button("laser", 200 + button.size() * 75, 525));
+
+		//pause button
+			button.add(new Button("pause", 1024 - 75, 525));
+			button.get(button.size() - 1).locked = false;
+			//button.get(button.size() - 1).selected = true;
 	}
+
+
+
 
 	void removesprite() {
 		for(Zombie z : zombies) if (!z.active) {zombies.remove(z); break;}

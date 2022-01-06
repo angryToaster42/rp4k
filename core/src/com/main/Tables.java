@@ -37,6 +37,10 @@ public class Tables {
         zombie_resources.put("riot", Resources.zombie_riot);
         zombie_resources.put("bob", Resources.bob);
 
+        resources.put("bullet_missile", Resources.bullet_missile);
+        resources.put("bullet_fire", Resources.bullet_fire);
+        resources.put("bullet_super", Resources.bullet_super);
+
         resources.put("effect_click", Resources.click_effect);
 
         //tooltip information
@@ -78,5 +82,8 @@ public class Tables {
         balance.put("cols_laser", 16);
         balance.put("cols_click", 4);
         balance.put("cols_bob", 6);
+
+        //bullets
+
     }
 }
