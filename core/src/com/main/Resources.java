@@ -16,12 +16,14 @@ public class Resources {
     static Texture button_pause = new Texture(Gdx.files.internal("pause.png"));
     static Texture button_start = new Texture(Gdx.files.internal("startButton.png"));
     static Texture button_exit = new Texture(Gdx.files.internal("exitButton.png"));
+    static Texture button_wall = new Texture(Gdx.files.internal("WallIcon.png"));
     static Texture locked = new Texture(Gdx.files.internal("locked.png"));
     static Texture selected = new Texture(Gdx.files.internal("border.png"));
     static Texture tooltip_bg = new Texture(Gdx.files.internal("ttbg.png"));
     static Texture button_close = new Texture(Gdx.files.internal("x.png"));
     static Texture red_bar = new Texture(Gdx.files.internal("red_bar.png"));
     static Texture green_bar = new Texture(Gdx.files.internal("green_bar.png"));
+    static Texture wall = new Texture(Gdx.files.internal("Wall.png"));
 
     // TODO: Cannons
     static Texture cannon = new Texture(Gdx.files.internal("Cannon.png"));

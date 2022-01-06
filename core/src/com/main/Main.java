@@ -24,7 +24,8 @@ public class Main extends ApplicationAdapter {
 	static ArrayList<Cannon> cannon = new ArrayList<Cannon>();
 	static ArrayList<Button> button = new ArrayList<Button>();
 	static ArrayList<Bullet> bullets = new ArrayList<Bullet>();
-	static ArrayList<Effect> effects = new ArrayList<>();
+	static ArrayList<Effect> effects = new ArrayList<Effect>();
+	static ArrayList<Wall> walls = new ArrayList<Wall>();
 
 	@Override
 	public void create () {
@@ -41,6 +42,7 @@ public class Main extends ApplicationAdapter {
 		batch.draw(Resources.bg, 0, 0);
 
 		// RENDER SPRITES
+		for(Wall w : walls) w.draw(batch);
 		for(Cannon z : cannon) z.draw(batch);
 		for(Button z : button) z.draw(batch);
 		for(Zombie z : zombies) z.draw(batch);
@@ -63,6 +65,7 @@ public class Main extends ApplicationAdapter {
 			for(Button z : button) z.update();
 			for(Bullet b : bullets) b.update();
 			for(Effect b : effects) b.update();
+			for(Wall w : walls) w.update();
 		}
 		removesprite();
 	}
@@ -96,7 +99,10 @@ public class Main extends ApplicationAdapter {
 					if(!b.t.gethitbox().contains(x, y) && !b.t.hidden) { hidett();}
 				}
 			}
-
+			if(walls.size() < 3 && (cannontype.equals("wall") || cannontype.equals("mounted"))) {
+				walls.add(new Wall(x, 0, cannontype.equals("mounted")));
+				return;
+			}
 			for(Cannon c : cannon) if(c.gethitbox().contains(x, y)) return;
 			if(buildable(x, y)) if(UI.money >= (Tables.balance.get("cost_"+cannontype) == null ? 10 : Tables.balance.get("cost_"+cannontype))) {
 				UI.money -= (Tables.balance.get("cost_"+cannontype) == null ? 10 : Tables.balance.get("cost_"+cannontype));
@@ -130,6 +136,10 @@ public class Main extends ApplicationAdapter {
 			button.add(new Button("super", 200 + button.size() * 75, 525));
 			button.add(new Button("fire", 200 + button.size() * 75, 525));
 			button.add(new Button("laser", 200 + button.size() * 75, 525));
+			button.add(new Button("wall", button.size() * 75 + 200, 525));
+			button.get(button.size() - 1).locked = false;
+			button.get(button.size() - 1).selected = false;
+			button.add(new Button("mounted", button.size() * 75 + 200, 525));
 
 		//pause button
 			button.add(new Button("pause", 1024 - 75, 525));
@@ -144,6 +154,8 @@ public class Main extends ApplicationAdapter {
 		for(Zombie z : zombies) if (!z.active) {zombies.remove(z); break;}
 		for(Bullet b : bullets) if (!b.active) {bullets.remove(b); break;}
 		for(Effect b : effects) if (!b.active) {effects.remove(b); break;}
+		for(Wall w : walls) if (!w.active) {walls.remove(w); break;}
+		for(Cannon c : cannon) if (!c.active) {cannon.remove(c); break;}
 	}
 
 	void spawn_zombies() {
